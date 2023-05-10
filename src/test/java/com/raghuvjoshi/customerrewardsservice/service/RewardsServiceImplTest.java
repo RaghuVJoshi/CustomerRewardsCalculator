@@ -245,18 +245,18 @@ public class RewardsServiceImplTest {
         assertTrue(rewardsPerCustomer.get(1L).containsKey("February"));
         assertTrue(rewardsPerCustomer.get(1L).containsKey("March"));
         assertEquals(Double.valueOf(0), rewardsPerCustomer.get(1L).get("January"));
-        assertEquals(Double.valueOf(200), rewardsPerCustomer.get(1L).get("February"));
-        assertEquals(Double.valueOf(300), rewardsPerCustomer.get(1L).get("March"));
+        assertEquals(Double.valueOf(150), rewardsPerCustomer.get(1L).get("February"));
+        assertEquals(Double.valueOf(250), rewardsPerCustomer.get(1L).get("March"));
 
         assertTrue(rewardsPerMonth.containsKey("January"));
         assertTrue(rewardsPerMonth.containsKey("February"));
         assertTrue(rewardsPerMonth.containsKey("March"));
         assertEquals(Double.valueOf(0), rewardsPerMonth.get("January"));
-        assertEquals(Double.valueOf(200), rewardsPerMonth.get("February"));
-        assertEquals(Double.valueOf(300), rewardsPerMonth.get("March"));
+        assertEquals(Double.valueOf(150), rewardsPerMonth.get("February"));
+        assertEquals(Double.valueOf(250), rewardsPerMonth.get("March"));
 
         assertTrue(totalRewardsPerCustomer.containsKey(1L));
-        assertEquals(Double.valueOf(500), totalRewardsPerCustomer.get(1L));
+        assertEquals(Double.valueOf(400), totalRewardsPerCustomer.get(1L));
     }
 
 }

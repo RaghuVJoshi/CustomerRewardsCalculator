@@ -156,7 +156,7 @@ public class RewardsControllerTest {
         String month = "invalid_month";
 
         // Act
-        MvcResult result = mockMvc.perform(get("/rewards")
+        MvcResult result = mockMvc.perform(get("/api/rewards")
                         .param("customerId", String.valueOf(customerId))
                         .param("month", month))
                 .andExpect(status().isBadRequest())
@@ -175,7 +175,7 @@ public class RewardsControllerTest {
         String month = "January";
 
         // Act
-        MvcResult result = mockMvc.perform(get("/rewards")
+        MvcResult result = mockMvc.perform(get("/api/rewards")
                         .param("customerId", String.valueOf(customerId))
                         .param("month", month))
                 .andExpect(status().isBadRequest())
@@ -202,7 +202,7 @@ public class RewardsControllerTest {
         when(rewardsService.getTransactions(customerId, month)).thenReturn(transactions);
 
         // Act
-        MvcResult result = mockMvc.perform(get("/rewards")
+        MvcResult result = mockMvc.perform(get("/api/rewards")
                         .param("customerId", String.valueOf(customerId))
                         .param("month", month))
                 .andExpect(status().isOk())
