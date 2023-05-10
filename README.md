@@ -184,6 +184,8 @@ There is also a health check endpoint that can be used to check if service is up
     Request : `http://localhost:8080/api/rewards/health` on your browser
     Response : a message appears stating 'service is running' or 'service is down'
 
+![health check example dmeo from browser](/images/healthcheck.png "Health Check Demo")
+
 ## Installing and running service on your local machine
 
 1. Clone the repository on your local machine
@@ -201,20 +203,6 @@ There is also a health check endpoint that can be used to check if service is up
 ## Run tests for the service.
 To run unit tests associated with the services, go to root directory of spring boot project and run `mvn test`.
 
-## Additional references
-Follow the below references for a deeper understanding of the Spring Boot framework and project.
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.0.6/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.0.6/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/3.0.6/reference/htmlsingle/#web)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/3.0.6/reference/htmlsingle/#data.sql.jpa-and-spring-data)
-
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
 
 
 
