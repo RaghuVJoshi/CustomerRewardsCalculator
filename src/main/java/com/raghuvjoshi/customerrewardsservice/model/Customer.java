@@ -20,6 +20,19 @@ public class Customer {
 
     @Column(name = "name")
     private String name;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
+
+    public Customer() {
+    }
+
+    public Customer(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
@@ -33,18 +46,6 @@ public class Customer {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
-
-    public Customer() {
-    }
-
-    public Customer(Long id, String name) {
-        this.id = id;
         this.name = name;
     }
 }

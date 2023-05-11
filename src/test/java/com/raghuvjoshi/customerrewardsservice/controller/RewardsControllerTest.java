@@ -3,6 +3,7 @@ package com.raghuvjoshi.customerrewardsservice.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.raghuvjoshi.customerrewardsservice.exception.ServiceException;
+import com.raghuvjoshi.customerrewardsservice.model.CustomerRewards;
 import com.raghuvjoshi.customerrewardsservice.model.Transaction;
 import com.raghuvjoshi.customerrewardsservice.model.Customer;
 import com.raghuvjoshi.customerrewardsservice.repository.CustomerRepository;
@@ -57,7 +58,7 @@ public class RewardsControllerTest {
         Long customerId = 1L;
         String month = "January";
         List<Transaction> transactions = new ArrayList<>();
-        Map<String, Object> rewards = new HashMap<>();
+        CustomerRewards rewards = new CustomerRewards();
         when(customerRepository.existsById(customerId)).thenReturn(true);
         when(rewardsService.getTransactions(customerId, month)).thenReturn(transactions);
         when(rewardsService.calculateRewards(transactions)).thenReturn(rewards);
@@ -108,18 +109,15 @@ public class RewardsControllerTest {
         public void testGetRewardsWithValidParams() throws Exception {
             // Arrange
             Long customerId = 1L;
-            String month = "january";
+            String month = "January";
 
             Customer c1 = new Customer(1L, "John");
 
-            Transaction t1 = new Transaction(1L, 100D, LocalDate.of(2023, Month.JANUARY, 1), c1);
-            Transaction t2 = new Transaction(2L, 200D, LocalDate.of(2023, Month.JANUARY, 5), c1);
+            Transaction t1 = new Transaction(1L, 100D, LocalDate.of(2023, Month.MARCH, 1), c1);
+            Transaction t2 = new Transaction(2L, 200D, LocalDate.of(2023, Month.MARCH, 5), c1);
 
             List<Transaction> transactions = Arrays.asList(t1, t2);
-            Map<String, Object> expectedRewards = new HashMap<>();
-            expectedRewards.put("customerId", customerId);
-            expectedRewards.put("month", month);
-            expectedRewards.put("rewards", 3);
+            CustomerRewards expectedRewards = new CustomerRewards();
 
             when(customerRepository.existsById(customerId)).thenReturn(true);
             when(rewardsService.getTransactions(customerId, month)).thenReturn(transactions);
@@ -209,7 +207,7 @@ public class RewardsControllerTest {
                 .andReturn();
 
         // Assert
-        Map<String, Object> rewards = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<Map<String, Object>>(){});
+        CustomerRewards rewards = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<CustomerRewards>(){});
         assertNotNull(rewards);
     }
 

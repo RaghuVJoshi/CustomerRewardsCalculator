@@ -1,6 +1,7 @@
 package com.raghuvjoshi.customerrewardsservice.service;
 
 import com.raghuvjoshi.customerrewardsservice.exception.ServiceException;
+import com.raghuvjoshi.customerrewardsservice.model.CustomerRewards;
 import com.raghuvjoshi.customerrewardsservice.model.Transaction;
 import com.raghuvjoshi.customerrewardsservice.repository.TransactionRepository;
 import com.raghuvjoshi.customerrewardsservice.model.Customer;
@@ -211,11 +212,11 @@ public class RewardsServiceImplTest {
 
     @Test
     public void testCalculateRewardsForEmptyTransactions() {
-        Map<String, Object> rewards = rewardsService.calculateRewards(new ArrayList<>());
+        CustomerRewards rewards = rewardsService.calculateRewards(new ArrayList<>());
         assertNotNull(rewards);
-        Map<Long, Map<String, Double>> rewardsPerCustomer = (Map<Long, Map<String, Double>>) rewards.get("rewardsPerCustomer");
-        Map<String, Double> rewardsPerMonth = (Map<String, Double>) rewards.get("rewardsPerMonth");
-        Map<Long, Double> totalRewardsPerCustomer = (Map<Long, Double>) rewards.get("totalRewardsPerCustomer");
+        Map<Long, Map<String, Double>> rewardsPerCustomer = rewards.getRewardsPerCustomer();
+        Map<String, Double> rewardsPerMonth = rewards.getRewardsPerMonth();
+        Map<Long, Double> totalRewardsPerCustomer = rewards.getTotalRewardsPerCustomer();
         assertTrue(rewardsPerCustomer.isEmpty());
         assertTrue(rewardsPerMonth.isEmpty());
         assertTrue(totalRewardsPerCustomer.isEmpty());
@@ -229,12 +230,12 @@ public class RewardsServiceImplTest {
         transactions.add(new Transaction(2L, 150D, LocalDate.of(2022, 2, 5), customer));
         transactions.add(new Transaction(3L, 200D, LocalDate.of(2022, 3, 15), customer));
 
-        Map<String, Object> rewards = rewardsService.calculateRewards(transactions);
+        CustomerRewards rewards = rewardsService.calculateRewards(transactions);
         assertNotNull(rewards);
 
-        Map<Long, Map<String, Double>> rewardsPerCustomer = (Map<Long, Map<String, Double>>) rewards.get("rewardsPerCustomer");
-        Map<String, Double> rewardsPerMonth = (Map<String, Double>) rewards.get("rewardsPerMonth");
-        Map<Long, Double> totalRewardsPerCustomer = (Map<Long, Double>) rewards.get("totalRewardsPerCustomer");
+        Map<Long, Map<String, Double>> rewardsPerCustomer = rewards.getRewardsPerCustomer();
+        Map<String, Double> rewardsPerMonth = rewards.getRewardsPerMonth();
+        Map<Long, Double> totalRewardsPerCustomer = rewards.getTotalRewardsPerCustomer();
 
         assertEquals(1, rewardsPerCustomer.size());
         assertEquals(3, rewardsPerMonth.size());

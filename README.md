@@ -184,6 +184,12 @@ There is also a health check endpoint that can be used to check if service is up
     Request : `http://localhost:8080/api/rewards/health` on your browser
     Response : a message appears stating 'service is running' or 'service is down'
 
+or you can use the actuator health endpoint given by Spring to check service status.
+
+    Request : `http://localhost:8080/actuator/health` on your browser
+    Response : JSON response - {"status":"UP"} or {"status":"DOWN"}
+   
+
 ![health check example dmeo from browser](/images/healthcheck.png "Health Check Demo")
 
 ## Installing and running service on your local machine

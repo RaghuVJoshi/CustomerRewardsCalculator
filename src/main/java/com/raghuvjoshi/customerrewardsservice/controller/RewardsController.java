@@ -1,6 +1,7 @@
 package com.raghuvjoshi.customerrewardsservice.controller;
 
 import com.raghuvjoshi.customerrewardsservice.exception.ServiceException;
+import com.raghuvjoshi.customerrewardsservice.model.CustomerRewards;
 import com.raghuvjoshi.customerrewardsservice.model.Transaction;
 import com.raghuvjoshi.customerrewardsservice.utils.ValidationUtils;
 import com.raghuvjoshi.customerrewardsservice.exception.RestExceptionHandler;
@@ -57,7 +58,7 @@ public class RewardsController {
             List<Transaction> transactions = rewardsService.getTransactions(customerId, month);
 
             // Calculate rewards for queried transactions
-            Map<String, Object> rewards = rewardsService.calculateRewards(transactions);
+            CustomerRewards rewards = rewardsService.calculateRewards(transactions);
 
             return ResponseEntity.ok(rewards);
         } catch (ServiceException ex) {

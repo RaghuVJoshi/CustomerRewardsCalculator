@@ -1,6 +1,7 @@
 package com.raghuvjoshi.customerrewardsservice.service;
 
 import com.raghuvjoshi.customerrewardsservice.exception.ServiceException;
+import com.raghuvjoshi.customerrewardsservice.model.CustomerRewards;
 import com.raghuvjoshi.customerrewardsservice.model.Transaction;
 import com.raghuvjoshi.customerrewardsservice.repository.TransactionRepository;
 import com.raghuvjoshi.customerrewardsservice.utils.RewardCalculatorUtil;
@@ -101,12 +102,12 @@ public class RewardsServiceImpl implements RewardsService{
 
     /**
      * Compute reward points for query response.
+     *
      * @param transactions - List of transactions retrieved from database.
      * @return - Map of rewards objects per customer / month.
      */
     @Override
-    public Map<String, Object> calculateRewards(List<Transaction> transactions) {
-        Map<String, Object> rewards = new HashMap<>();
+    public CustomerRewards calculateRewards(List<Transaction> transactions) {
 
         // Calculate rewards per customer and per month
         Map<Long, Map<String, Double>> rewardsPerCustomer = new HashMap<>();
@@ -138,12 +139,8 @@ public class RewardsServiceImpl implements RewardsService{
             totalRewardsPerCustomer.put(customerId, totalPoints);
         }
 
-        // Add rewards to response object
-        rewards.put("rewardsPerCustomer", rewardsPerCustomer);
-        rewards.put("rewardsPerMonth", rewardsPerMonth);
-        rewards.put("totalRewardsPerCustomer", totalRewardsPerCustomer);
-
-        return rewards;
+        // Add rewards to Customer rewards object and return them.
+        return new CustomerRewards(rewardsPerCustomer, rewardsPerMonth, totalRewardsPerCustomer);
     }
 
 }
