@@ -28,8 +28,8 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(Long id, String name) {
-        this.id = id;
+    public Customer(Long customerId, String name) {
+        this.id = customerId;
         this.name = name;
     }
 

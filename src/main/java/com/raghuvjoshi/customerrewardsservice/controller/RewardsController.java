@@ -1,11 +1,9 @@
 package com.raghuvjoshi.customerrewardsservice.controller;
 
-import com.raghuvjoshi.customerrewardsservice.exception.ServiceException;
 import com.raghuvjoshi.customerrewardsservice.model.CustomerRewards;
 import com.raghuvjoshi.customerrewardsservice.model.Transaction;
-import com.raghuvjoshi.customerrewardsservice.utils.ValidationUtils;
-import com.raghuvjoshi.customerrewardsservice.exception.RestExceptionHandler;
-import com.raghuvjoshi.customerrewardsservice.repository.CustomerRepository;
+import com.raghuvjoshi.customerrewardsservice.service.TransactionService;
+import com.raghuvjoshi.customerrewardsservice.utils.RewardValidationUtils;
 import com.raghuvjoshi.customerrewardsservice.service.RewardsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +19,19 @@ import java.util.*;
 @RequestMapping("/api/rewards")
 @Slf4j
 public class RewardsController {
-    @Autowired
-    private CustomerRepository customerRepository;
+
+    private final RewardValidationUtils rewardValidationUtils;
+    private final RewardsService rewardsService;
+    private final TransactionService transactionService;
 
     @Autowired
-    private RewardsService rewardsService;
+    public RewardsController(RewardValidationUtils rewardValidationUtils,
+                             RewardsService rewardsService,
+                             TransactionService transactionService) {
+        this.rewardValidationUtils = rewardValidationUtils;
+        this.rewardsService = rewardsService;
+        this.transactionService = transactionService;
+    }
 
     /**
      * Iterates through transactions filtered by API query parameters and computes reward points.
@@ -37,34 +43,16 @@ public class RewardsController {
     public ResponseEntity<?> getRewards(@RequestParam(required = false) Long customerId,
                                         @RequestParam(required = false) String month){
 
+        rewardValidationUtils.validateCustomerIdInput(customerId);
+        rewardValidationUtils.validateCustomerIdInDatabase(customerId);
+        rewardValidationUtils.validateMonth(month);
 
-        RestExceptionHandler handler = new RestExceptionHandler();;
-        try {
+        // Get transactions for given query parameters
+        List<Transaction> transactions = transactionService.getTransactions(customerId, month);
 
-            // Validate query parameters
-            if (customerId != null && customerId <= 0L) {
-                log.error("Invalid Customer Id specified in request: " + customerId);
-                throw new ServiceException("Invalid Customer Id: " + customerId, ServiceException.ExceptionType.INVALID_CUSTOMER_ID);
-            }
-            if (customerId != null && !customerRepository.existsById(customerId)) {
-                log.error("Customer with Id " + customerId + "not found");
-                throw new ServiceException("Customer with ID " + customerId + " not found", ServiceException.ExceptionType.CUSTOMER_NOT_FOUND);
-            }
-            if (month != null && !ValidationUtils.isValidMonth(month)) {
-                log.error("Invalid month specified in request: " + month);
-                throw new ServiceException("Invalid month: " + month, ServiceException.ExceptionType.INVALID_MONTH);
-            }
-            // Get transactions for given query parameters
-            List<Transaction> transactions = rewardsService.getTransactions(customerId, month);
+        // Calculate rewards for queried transactions
+        CustomerRewards rewards = rewardsService.calculateRewards(transactions);
 
-            // Calculate rewards for queried transactions
-            CustomerRewards rewards = rewardsService.calculateRewards(transactions);
-
-            return ResponseEntity.ok(rewards);
-        } catch (ServiceException ex) {
-            log.error("Found exception of type " + ex.getExceptionType());
-            return handler.handleServiceException(ex);
-        }
-
+        return ResponseEntity.ok(rewards);
     }
 }
